@@ -201,7 +201,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Testing
 
-The project uses Playwright for component testing. This allows us to test components in a real browser environment, providing more reliable test results.
+The project uses Playwright for both unit and component testing. This allows us to test both business logic and UI components in a real browser environment, providing more reliable test results.
 
 ### Running Tests
 
@@ -210,7 +210,7 @@ The project uses Playwright for component testing. This allows us to test compon
 npx playwright test
 
 # Run specific test file
-npx playwright test tests/unit/components/YourComponent.test.tsx
+npx playwright test tests/unit/hooks/useTokens.test.tsx
 
 # Show last test report
 npx playwright show-report
@@ -219,8 +219,22 @@ npx playwright show-report
 ### Test Structure
 
 - `tests/unit/` - Contains all unit tests
-- `tests/unit/components/` - Component-specific tests
-- `tests/unit/test-utils.tsx` - Common test utilities and fixtures
+  - `tests/unit/components/` - Component-specific tests
+  - `tests/unit/hooks/` - Custom hook tests
+  - `tests/unit/test-utils.tsx` - Common test utilities and fixtures
+
+### Custom Hook Tests
+
+We've implemented comprehensive tests for some custom hooks:
+
+### Mock Patterns
+
+Tests follow consistent patterns for mocking external dependencies:
+
+- API calls are mocked using Playwright's route interception
+- Wallet providers are mocked with consistent interfaces
+- Environment variables are carefully controlled during tests
+- UI interactions are tested with realistic user behavior simulation
 
 ## Design Decisions and Assumptions
 

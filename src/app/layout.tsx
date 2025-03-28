@@ -20,11 +20,6 @@ export const viewport: Viewport = {
   width: 'device-width',
 };
 
-// Environmenta variable validation
-if (!process.env.APP_BASE_URL) {
-  console.error(`APP_BASE_URL not set`);
-}
-
 /**
  * Root layout component for the application
  *
