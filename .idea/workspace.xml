@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="528a03f0-a3c7-41a8-8fff-798814c3a373" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/app/tokens/route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/App/App.style.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/App/App.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/App/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Button/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Navbar/Logo/Logo.style.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Navbar/Logo/Logo.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Navbar/Logo/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Navbar/Navbar.style.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Navbar/Navbar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Navbar/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/Portfolio.style.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssets.server.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/PortfolioAssetsList.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioTitle/PortfolioTitle.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioTitle/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWallet/PortfolioWallet.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWallet/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWrapper/PortfolioWrapper.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWrapper/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/components/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Portfolio/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/const/metadata.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fonts.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/hooks/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/providers/ThemeProvider/ThemeProvider.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/providers/ThemeProvider/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/theme/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/tokens.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/consolidateTokens.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/copyToClipboard.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/createWalletAbbr.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;grandmastr&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/grandmastr/grand.fi.git&quot;,
+    &quot;accountId&quot;: &quot;5d02d813-8286-40b9-bb62-e34811924792&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2ube6D1H5mliY6xhq4StpPOLSgW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/thegrandmaster/vault/web/grand.fi/src/fonts&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;/Users/thegrandmaster/vault/web/grand.fi/node_modules/eslint&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;/usr/local/Cellar/node/23.7.0/bin/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/thegrandmaster/vault/web/grand.fi/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/thegrandmaster/vault/web/grand.fi/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/fonts" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/Button" />
+      <recent name="$PROJECT_DIR$/src/utils/fetch" />
+      <recent name="$PROJECT_DIR$/src/components/Portfolio/components" />
+      <recent name="$PROJECT_DIR$/src/providers" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23726.96" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="528a03f0-a3c7-41a8-8fff-798814c3a373" name="Changes" comment="" />
+      <created>1742521524300</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742521524300</updated>
+      <workItem from="1742521525632" duration="3173000" />
+      <workItem from="1742558346365" duration="1532000" />
+      <workItem from="1742587508724" duration="5454000" />
+      <workItem from="1742608325951" duration="65071000" />
+      <workItem from="1742838360477" duration="22486000" />
+      <workItem from="1742918019290" duration="15318000" />
+      <workItem from="1743038855325" duration="23438000" />
+      <workItem from="1743067714710" duration="9273000" />
+      <workItem from="1743078671338" duration="7783000" />
+      <workItem from="1743089946087" duration="10122000" />
+      <workItem from="1743121742047" duration="2724000" />
+      <workItem from="1743126812445" duration="1077000" />
+      <workItem from="1743127921544" duration="14354000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/tests/wallet-setup/synpress.js" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
