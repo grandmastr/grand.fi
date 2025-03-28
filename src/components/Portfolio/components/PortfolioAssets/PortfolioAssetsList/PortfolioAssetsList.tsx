@@ -5,40 +5,58 @@ import { ConsolidatedToken } from '@/types/tokens';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
 import { WalletAvatar } from '../../../components/PortfolioWallet/PortfolioWallet.style';
-// Removed balance-related imports
 
 /**
- * @description Props interface for the PortfolioAssetsList component.
+ * Props interface for the PortfolioAssetsList component
  */
 interface PortfolioAssetsListProps {
-  /**
-   * @description Array of consolidated tokens to display in the list.
-   */
+  /** Array of consolidated tokens to display in the list */
   tokens?: ConsolidatedToken[];
-  /**
-   * @description Whether the token list itself is loading (initial fetch).
-   */
+  /** Whether the data is currently loading */
   isLoading?: boolean;
 }
 
 /**
- * @description Skeleton loader for the asset list.
+ * Skeleton loader for the asset list
+ * Displays placeholder animations while asset data is loading
+ *
+ * @param {Object} props - Component props
+ * @param {number} [props.itemCount=5] - Number of skeleton items to display
  */
 export const PortfolioAssetsListSkeleton = ({ itemCount = 5 }: { itemCount?: number }) => {
   const theme = useTheme();
+
   return (
-    <Box sx={{ height: '800px', width: '100%', overflow: 'auto' }}>
+    <Box
+      sx={{
+        height: '50rem',
+        width: '100%',
+        overflow: 'auto',
+      }}
+    >
       {Array(itemCount).fill(0).map((_, index) => (
         <PortfolioBox
           key={`asset-skeleton-${index}`}
-          sx={{ padding: theme.spacing(2), marginBottom: theme.spacing(1), height: '72px' }}
+          sx={{
+            padding: theme.spacing(2),
+            marginBottom: theme.spacing(2),
+            height: '4.5rem',
+          }}
         >
-          <Stack direction="row" alignItems="center" spacing={2} sx={{ height: '100%' }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={2}
+            sx={{ height: '100%' }}
+          >
             <Skeleton variant="circular" width={32} height={32} animation="wave" />
-            <Stack sx={{ flexGrow: 1 }} spacing={0.5}>
-              <Skeleton variant="text" width="30%" height={24} animation="wave" />
-              <Skeleton variant="text" width="50%" height={16} animation="wave" />
+
+            <Stack sx={{ flexGrow: 1 }}>
+              <Skeleton variant="text" width="30%" height={'1.5rem'} animation="wave" />
+              <Skeleton variant="text" width="50%" height={'1rem'} animation="wave" />
             </Stack>
+
+            <Skeleton variant="text" width={'3.75rem'} height={'1.5rem'} animation="wave" />
           </Stack>
         </PortfolioBox>
       ))}
@@ -47,7 +65,7 @@ export const PortfolioAssetsListSkeleton = ({ itemCount = 5 }: { itemCount?: num
 };
 
 /**
- * @description Token logo component.
+ * Token logo component with loading/error handling
  */
 const TokenLogo = ({ token }: { token: ConsolidatedToken }) => {
   const [imageLoaded, setImageLoaded] = useState(true);
@@ -55,7 +73,13 @@ const TokenLogo = ({ token }: { token: ConsolidatedToken }) => {
 
   if (!token.logoURI || imageError) {
     return (
-      <WalletAvatar sx={{ width: 32, height: 32, fontSize: '0.57rem' }}>
+      <WalletAvatar
+        sx={{
+          width: 32,
+          height: 32,
+          fontSize: '0.57rem',
+        }}
+      >
         <Typography variant={'h2'}>{token.symbol?.[0] || '?'}</Typography>
       </WalletAvatar>
     );
@@ -63,87 +87,98 @@ const TokenLogo = ({ token }: { token: ConsolidatedToken }) => {
 
   return (
     <>
-      {!imageLoaded && <Skeleton variant="circular" width={32} height={32} animation="wave" />}
+      {!imageLoaded && (
+        <Skeleton variant="circular" width={32} height={32} animation="wave" />
+      )}
       <WalletAvatar
         src={token.logoURI}
         alt={token.symbol}
-        sx={{ width: 32, height: 32, display: imageLoaded ? 'flex' : 'none' }}
+        sx={{
+          width: 32,
+          height: 32,
+          display: imageLoaded ? 'flex' : 'none',
+        }}
         onLoad={() => setImageLoaded(true)}
-        onError={() => { setImageLoaded(true); setImageError(true); }}
+        onError={() => {
+          setImageLoaded(true);
+          setImageError(true);
+        }}
       />
     </>
   );
 };
 
-// Removed DisplayToken interface
-
 /**
- * @function PortfolioAssetsList
- * @description Virtualized list showing portfolio assets (icon, name, symbol, network count).
+ * Virtualized list of portfolio assets
+ *
+ * @param {PortfolioAssetsListProps} props - Component props
  */
 const PortfolioAssetsList = ({
   tokens = [],
-  isLoading: isTokenListLoading = false
+  isLoading = false
 }: PortfolioAssetsListProps) => {
   const theme = useTheme();
 
-  // Filter out tokens without essential info
   const validTokens = useMemo(
-    () => tokens.filter((token) => Boolean(token.name) && Boolean(token.symbol)),
+    () => tokens.filter((token) => Boolean(token.name)),
     [tokens],
   );
 
-  // Sort alphabetically by symbol as a default
-  const sortedTokens = useMemo(() => {
-     return [...validTokens].sort((a, b) => a.symbol.localeCompare(b.symbol));
-  }, [validTokens]);
-
-
   const parentRef = useRef<HTMLDivElement>(null);
+
   const itemHeight = 72;
   const itemSpacing = theme.spacing(1);
-  const itemTotalHeight = itemHeight + (typeof itemSpacing === 'string' ? parseInt(itemSpacing) : itemSpacing);
+  const itemTotalHeight = itemHeight + parseInt(itemSpacing);
 
+  // Initialize the virtualizer hook
   const virtualizer = useVirtualizer({
-    count: sortedTokens.length, // Use sorted list length
+    count: validTokens.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => itemTotalHeight,
-    overscan: 10,
+    overscan: 5,
   });
 
-  // Show skeleton ONLY if the initial token list is loading
-  if (isTokenListLoading) {
+  // Show skeleton loader if data is loading
+  if (isLoading) {
     return <PortfolioAssetsListSkeleton itemCount={7} />;
   }
 
-  // Show empty state only if the initial token list was empty
-  if (validTokens.length === 0) {
+  // If no tokens are available after loading, show an empty state
+  if (!isLoading && validTokens.length === 0) {
     return (
       <PortfolioBox sx={{ padding: theme.spacing(3), textAlign: 'center' }}>
         <Typography variant="body1" color="text.secondary">
-          No assets found.
+          No assets found for your connected wallets
         </Typography>
       </PortfolioBox>
     );
   }
 
-  // Render the virtualized list
   return (
     <Box
       ref={parentRef}
       sx={{
-        height: '800px',
+        height: '50rem',
         width: '100%',
         overflow: 'auto',
         position: 'relative',
-        '&::-webkit-scrollbar': { width: '0' },
-        '&::-webkit-scrollbar-thumb': { borderRadius: '4px' },
+        '&::-webkit-scrollbar': {
+          width: '0',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          borderRadius: '0.25rem',
+        },
       }}
     >
-      <Box sx={{ height: `${virtualizer.getTotalSize()}px`, width: '100%', position: 'relative' }}>
+      <Box
+        sx={{
+          height: `${virtualizer.getTotalSize()}px`,
+          width: '100%',
+          position: 'relative',
+        }}
+      >
         {virtualizer.getVirtualItems().map((virtualRow) => {
-          const token = sortedTokens[virtualRow.index];
-          if (!token.name) return null;
+          const token = validTokens[virtualRow.index];
 
           return (
             <PortfolioBox
@@ -156,32 +191,26 @@ const PortfolioAssetsList = ({
                 height: `${itemHeight}px`,
                 transform: `translateY(${virtualRow.start}px)`,
                 padding: theme.spacing(2),
-                display: 'flex',
-                alignItems: 'center',
               }}
             >
-              {/* Left side: Token Info */}
-              <Stack direction="row" alignItems="center" spacing={2} sx={{ flexGrow: 1 }}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={2}
+                sx={{ height: '100%' }}
+              >
                 <TokenLogo token={token} />
-                <Stack spacing={0.5}>
+
+                <Stack>
                   <Typography variant="body1" fontWeight="500">
                     {token.symbol}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {token.name}
+                  <Typography variant="caption" color="grey.400">
+                    Available on {token.networks.length} network
+                    {token.networks.length !== 1 ? 's' : ''}
                   </Typography>
                 </Stack>
               </Stack>
-
-              {/* Right side: REMOVED Balance/Price */}
-              {/* <Stack alignItems="flex-end" spacing={0.5}>
-                <Typography variant="body1" fontWeight="500">
-                  {formatCurrencyValue(totalTokenUSD)}
-                </Typography>
-                 <Typography variant="caption" color="text.secondary">
-                    @{formatCurrencyValue(parseFloat(token.priceUSD || '0'))}
-                 </Typography>
-              </Stack> */}
             </PortfolioBox>
           );
         })}
