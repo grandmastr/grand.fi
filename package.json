@@ -7,13 +7,17 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}'",
     "lint": "next lint",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:headed": "playwright test --headed",
     "build:cache": "synpress --headless",
-    "build:cache:ci": "xvfb-run synpress --force tests/wallet-setup/"
+    "build:cache:ci": "xvfb-run synpress --force tests/wallet-setup/",
+    "test:wallet": "playwright test tests/wallet-tests",
+    "test:metamask": "playwright test tests/metamask/wallet-connection.test.js",
+    "test:wallet-simulation": "playwright test tests/wallet-integration/metamask-connection.test.js --headed"
   },
   "dependencies": {
     "@bigmi/react": "^0.1.1",

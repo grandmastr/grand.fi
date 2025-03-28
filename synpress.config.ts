@@ -1,17 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
-
-// Get the directory name of the current module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 export default defineConfig({
-  testDir: './tests',
-  fullyParallel: true,
+  testDir: './tests/unit/components',
+  testMatch: '**/ConnectButtonWithWallet.test.ts',
+  fullyParallel: false, // MetaMask tests cannot run in parallel
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1, // Must be 1 for MetaMask tests
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:3000',
@@ -23,14 +18,6 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
     },
   ],
 

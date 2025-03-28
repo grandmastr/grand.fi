@@ -1,25 +1,30 @@
 'use client';
 
-import { Typography } from '@mui/material';
+import { Box, CircularProgress, Tooltip, Typography } from '@mui/material';
 import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
 import { PortfolioAssetsList } from './PortfolioAssetsList';
 import { useTokenBalances } from '@/hooks/useTokenBalances';
 import PortfolioAssetsSkeleton from './PortfolioAssetsSkeleton';
 
 /**
- * Interface for the progress object returned by useTokenBalances
+ * Loading indicator component that shows a circular progress
  */
-interface BalanceLoadingProgressProps {
-  progress: {
-    processed: number;
-    total: number;
-    percentage: number;
-  };
-}
+const BalanceLoadingIndicator = () => (
+  <Box 
+    sx={{ 
+      display: 'flex', 
+      justifyContent: 'end',
+      py: 2
+    }}
+  >
+    <Tooltip title="Indexing wallet balances...">
+      <CircularProgress size={24} sx={{ mr: 2 }} />
+    </Tooltip>
+  </Box>
+);
 
 /**
  * @function PortfolioAssets
- * @description Client component that fetches and displays portfolio assets with balances
  */
 const PortfolioAssets = () => {
   const { tokensWithBalances, isLoading, error, progress } = useTokenBalances();
@@ -34,17 +39,34 @@ const PortfolioAssets = () => {
     );
   }
 
+  // Show skeleton loader when initially loading with no tokens available
   if (isLoading && !tokensWithBalances?.length) {
-    return <PortfolioAssetsSkeleton />
+    return <PortfolioAssetsSkeleton />;
   }
 
-  // Even while loading balances, we can show the tokens we have so far
   return (
     <>
+      {isLoading && <BalanceLoadingIndicator />}
+      
       <PortfolioAssetsList
         tokens={tokensWithBalances}
-        isLoading={isLoading && !tokensWithBalances?.length}
+        isLoading={isLoading}
+        progress={progress ? {
+          processed: progress.processed,
+          total: progress.total,
+          percentage: progress.percentage || 0,
+          tokensLoaded: tokensWithBalances?.length || 0
+        } : undefined}
       />
+      
+      {/* Show when no tokens are found */}
+      {!isLoading && tokensWithBalances?.length === 0 && (
+        <Box sx={{ padding: 3, textAlign: 'center' }}>
+          <Typography color="text.secondary">
+            No tokens found. Connect a wallet to view your balances.
+          </Typography>
+        </Box>
+      )}
     </>
   );
 };

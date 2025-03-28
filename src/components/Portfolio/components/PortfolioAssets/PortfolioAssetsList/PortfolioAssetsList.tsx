@@ -58,47 +58,6 @@ const remToPx = (rem: number): number => {
 };
 
 /**
- * Loading progress bar component for incremental loading
- */
-const LoadingProgressBar = ({ progress }: { progress: PortfolioAssetsListProps['progress'] }) => {
-  const theme = useTheme();
-
-  if (!progress) return null;
-
-  return (
-    <Box sx={{ width: '100%', padding: theme.spacing(1, 3) }}>
-      <Stack spacing={1}>
-        <LinearProgress
-          variant="determinate"
-          value={progress.percentage}
-          sx={{ height: 8, borderRadius: 4 }}
-        />
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Typography variant="caption" color="text.secondary">
-            Loading tokens ({progress.processed}/{progress.total})
-          </Typography>
-
-          {progress.round !== undefined && (
-            <Chip
-              label={`Round ${progress.round}`}
-              size="small"
-              color="primary"
-              variant="outlined"
-            />
-          )}
-
-          {progress.tokensLoaded !== undefined && (
-            <Typography variant="caption" color="primary">
-              {progress.tokensLoaded} tokens with balances found
-            </Typography>
-          )}
-        </Stack>
-      </Stack>
-    </Box>
-  );
-};
-
-/**
  * Individual row to display a token
  * Wrapped in React.memo to prevent unnecessary re-renders
  */
@@ -249,19 +208,6 @@ export const PortfolioAssetsList = ({
     setItemSizePx(itemHeightPx + spacingPx);
   }, [theme]);
 
-  // Show empty message after a delay to avoid flashing
-  useEffect(() => {
-    if (!isLoading && tokensToDisplay.length === 0) {
-      // Set a delay before showing the empty message
-      const timer = setTimeout(() => {
-        setShowEmptyMessage(true);
-      }, 2000);
-      return () => clearTimeout(timer);
-    } else {
-      setShowEmptyMessage(false);
-    }
-  }, [isLoading, tokensToDisplay.length]);
-
   // Initialize the virtualizer hook with pixel values
   const virtualizer = useVirtualizer({
     count: tokensToDisplay.length,
@@ -275,22 +221,9 @@ export const PortfolioAssetsList = ({
     return <PortfolioAssetsListSkeleton itemCount={7} />;
   }
 
-  // Show empty state only when not loading and confirmed empty
-  if (showEmptyMessage && tokensToDisplay.length === 0) {
-    return (
-      <PortfolioBox sx={{ padding: theme.spacing(3), textAlign: 'center' }}>
-        <Typography variant="body1" color="text.secondary">
-          No tokens with balances found for your connected wallets
-        </Typography>
-      </PortfolioBox>
-    );
-  }
-
   // We have tokens to show, or are still loading with cached tokens
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '50rem' }}>
-      {!isLoading && progress && <LoadingProgressBar progress={progress} />}
-
       <Box
         ref={parentRef}
         sx={{

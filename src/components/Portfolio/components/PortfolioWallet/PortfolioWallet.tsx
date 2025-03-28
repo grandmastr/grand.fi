@@ -1,5 +1,5 @@
 'use client';
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { Badge, Skeleton, Stack, Tooltip, Typography, colors, CircularProgress } from '@mui/material';
 import {
   type Account,
@@ -35,8 +35,19 @@ const LoadingProgress = ({ completed, total }: { completed: number; total: numbe
 
 const PortfolioWallet = () => {
   const { accounts } = useAccount();
+  // Use state to track if we've mounted on the client
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const isSomeWalletsConnected: boolean = !!accounts.length;
+
+  // During SSR or first render, show minimal content
+  if (!isMounted) {
+    return <ConnectButton />;
+  }
 
   return (
     <>
@@ -62,7 +73,7 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
   );
 
   // Show skeleton if chains aren't loaded yet
-  if (!chainsLoaded) {
+  if (!(chainsLoaded && account.isConnected)) {
     return <PortfolioWalletSkeleton />;
   }
 
@@ -89,13 +100,12 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
   return (
     <PortfolioBox>
       <Stack spacing={1}>
-        {/* First row: Wallet info with chain logo */}
         <Stack
-          direction={'row'}
+          direction="row"
           justifyContent="space-between"
-          alignItems={'center'}
+          alignItems="center"
         >
-          <Stack direction={'row'} alignItems={'center'} spacing={2}>
+          <Stack direction="row" alignItems="center" spacing={2}>
             <Badge className="badge" sx={{ borderRadius: '50%' }}>
               <WalletAvatar
                 src={walletIcon}
@@ -103,7 +113,7 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
               />
             </Badge>
             <Typography
-              variant={'subtitle2'}
+              variant="subtitle2"
               data-testid="wallet-address"
             >
               {createWalletAbbr(account.address)}
@@ -113,26 +123,26 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
           {activeChain?.logoURI ? (
             <WalletChainAvatar
               src={activeChain.logoURI}
-              alt={'chain-avatar'}
+              alt="chain-avatar"
               sx={{ width: '1.5rem', height: '1.5rem' }}
             />
           ) : (
-            <Skeleton variant="circular" width={'1.25rem'} height={'1.25rem'} />
+            <Skeleton variant="circular" width="1.25rem" height="1.25rem" />
           )}
         </Stack>
 
-        <Stack direction={'row'} spacing={1}>
-          <Tooltip title={'Copy Address'}>
+        <Stack direction="row" spacing={1}>
+          <Tooltip title="Copy Address">
             <IconButtonWrapper
-              aria-label={'Copy Address'}
+              aria-label="Copy Address"
               onClick={() => copyToClipboard(account.address)}
             >
               <ContentCopyIcon sx={{ fontSize: 'inherit', color: colors.grey[200] }} />
             </IconButtonWrapper>
           </Tooltip>
-          <Tooltip title={'Open in Explorer'}>
+          <Tooltip title="Open in Explorer">
             <IconButtonWrapper
-              aria-label={'Open In Explorer'}
+              aria-label="Open In Explorer"
               onClick={handleOpenInExplorer}
             >
               <OpenInNew
@@ -143,9 +153,9 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
               />
             </IconButtonWrapper>
           </Tooltip>
-          <Tooltip title={'Disconnect Wallet'}>
+          <Tooltip title="Disconnect Wallet">
             <IconButtonWrapper
-              aria-label={'Disconnect Wallet'}
+              aria-label="Disconnect Wallet"
               onClick={handleDisconnect}
               data-testid="disconnect-wallet-button"
             >
