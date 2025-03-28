@@ -11,9 +11,9 @@ export function useTokenList() {
   const connectedChainTypes = Array.from(
     new Set(
       accounts
-        .filter(account => account.isConnected)
-        .map(account => account.chainType)
-    )
+        .filter((account) => account.isConnected)
+        .map((account) => account.chainType),
+    ),
   );
 
   return useQuery<ConsolidatedToken[]>({
@@ -32,7 +32,7 @@ export function useTokenList() {
       // Transform SDK tokens to our internal token format
       const tokens: TokensResponse['tokens'] = {};
       for (const [chainId, chainTokens] of Object.entries(sdkTokens)) {
-        tokens[parseInt(chainId)] = chainTokens.map(token => ({
+        tokens[parseInt(chainId)] = chainTokens.map((token) => ({
           address: token.address,
           decimals: token.decimals,
           symbol: token.symbol,
@@ -53,4 +53,4 @@ export function useTokenList() {
     // Cache for 1 hour
     staleTime: 1000 * 60 * 60,
   });
-} 
+}

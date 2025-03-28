@@ -1,6 +1,14 @@
 'use client';
 import React, { useMemo, useRef, useState, useEffect } from 'react';
-import { Box, Skeleton, Stack, Typography, useTheme, LinearProgress, Chip } from '@mui/material';
+import {
+  Box,
+  Skeleton,
+  Stack,
+  Typography,
+  useTheme,
+  LinearProgress,
+  Chip,
+} from '@mui/material';
 import { TokenWithBalance } from '@/hooks/useTokenBalances';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
@@ -33,7 +41,7 @@ const formatUSD = (value: number): string => {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   }).format(value);
 };
 
@@ -45,9 +53,7 @@ const formatAmount = (value: string): string => {
   if (num === 0) return '0';
   if (num < 0.0001) return '<0.0001';
 
-  return num < 1
-    ? num.toFixed(4)
-    : num.toFixed(2);
+  return num < 1 ? num.toFixed(4) : num.toFixed(2);
 };
 
 /**
@@ -61,66 +67,68 @@ const remToPx = (rem: number): number => {
  * Individual row to display a token
  * Wrapped in React.memo to prevent unnecessary re-renders
  */
-const TokenRow = React.memo(({
-  token,
-  virtualRow,
-  theme
-}: {
-  token: TokenWithBalance,
-  virtualRow: any,
-  theme: any
-}) => {
-  // Get first balance for display, safely handle undefined case
-  const balanceEntries = Object.entries(token.balances || {});
-  const hasBalances = balanceEntries.length > 0;
-  const firstBalance = hasBalances ? balanceEntries[0][1] : undefined;
+const TokenRow = React.memo(
+  ({
+    token,
+    virtualRow,
+    theme,
+  }: {
+    token: TokenWithBalance;
+    virtualRow: any;
+    theme: any;
+  }) => {
+    // Get first balance for display, safely handle undefined case
+    const balanceEntries = Object.entries(token.balances || {});
+    const hasBalances = balanceEntries.length > 0;
+    const firstBalance = hasBalances ? balanceEntries[0][1] : undefined;
 
-  return (
-    <PortfolioBox
-      key={virtualRow.key}
-      sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '4.5rem',
-        transform: `translateY(${virtualRow.start}px)`,
-        padding: theme.spacing(2),
-      }}
-    >
-      <Stack
-        direction="row"
-        alignItems="center"
-        spacing={2}
-        sx={{ height: '100%' }}
+    return (
+      <PortfolioBox
+        key={virtualRow.key}
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '4.5rem',
+          transform: `translateY(${virtualRow.start}px)`,
+          padding: theme.spacing(2),
+        }}
       >
-        <TokenLogo token={token} />
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={2}
+          sx={{ height: '100%' }}
+        >
+          <TokenLogo token={token} />
 
-        <Stack sx={{ flexGrow: 1, minWidth: 0 }}>
-          <Typography variant="body1" fontWeight="500" noWrap>
-            {token.symbol}
-          </Typography>
-          <Typography variant="caption" color="grey.400" noWrap>
-            {token.name}
-          </Typography>
-        </Stack>
+          <Stack sx={{ flexGrow: 1, minWidth: 0 }}>
+            <Typography variant="body1" fontWeight="500" noWrap>
+              {token.symbol}
+            </Typography>
+            <Typography variant="caption" color="grey.400" noWrap>
+              {token.name}
+            </Typography>
+          </Stack>
 
-        <Stack alignItems="flex-end" sx={{ minWidth: '6.25rem' }}>
-          <Typography variant="body1" fontWeight="500" color="text.primary">
-            {formatUSD(token.totalValueUSD)}
-          </Typography>
-          <Typography variant="caption" color="primary.main" noWrap>
-            {token.networkCount > 1
-              ? `On ${token.networkCount} networks`
-              : firstBalance
-                ? `${formatAmount(firstBalance.formattedAmount)} ${token.symbol}`
-                : `0 ${token.symbol}`}
-          </Typography>
+          <Stack alignItems="flex-end" sx={{ minWidth: '6.25rem' }}>
+            <Typography variant="body1" fontWeight="500" color="text.primary">
+              {formatUSD(token.totalValueUSD)}
+            </Typography>
+            <Typography variant="caption" color="primary.main" noWrap>
+              {token.networkCount > 1
+                ? `On ${token.networkCount} networks`
+                : firstBalance
+                  ? `${formatAmount(firstBalance.formattedAmount)} ${token.symbol}`
+                  : `0 ${token.symbol}`}
+            </Typography>
+          </Stack>
         </Stack>
-      </Stack>
-    </PortfolioBox>
-  );
-});
+      </PortfolioBox>
+    );
+  },
+);
 
 TokenRow.displayName = 'TokenRow';
 
@@ -150,7 +158,12 @@ const TokenLogo = ({ token }: { token: TokenWithBalance }) => {
   return (
     <>
       {!imageLoaded && (
-        <Skeleton variant="circular" width="2rem" height="2rem" animation="wave" />
+        <Skeleton
+          variant="circular"
+          width="2rem"
+          height="2rem"
+          animation="wave"
+        />
       )}
       <WalletAvatar
         src={token.logoURI}
@@ -177,7 +190,7 @@ const TokenLogo = ({ token }: { token: TokenWithBalance }) => {
 export const PortfolioAssetsList = ({
   tokens = [],
   isLoading = false,
-  progress
+  progress,
 }: PortfolioAssetsListProps) => {
   const theme = useTheme();
   const parentRef = useRef<HTMLDivElement>(null);

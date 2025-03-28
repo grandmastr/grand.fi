@@ -1,2 +1,2 @@
 export * from './useChains';
-export * from './useTokens'
+export * from './useTokens';

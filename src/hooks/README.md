@@ -26,4 +26,4 @@ import { useTokenBalance } from 'src/hooks/contracts';
 - Document parameters, return values, and side effects
 - Include TypeScript types for parameters and return values
 - Write unit tests for complex hooks
-- Handle loading, error, and edge cases appropriately 
+- Handle loading, error, and edge cases appropriately

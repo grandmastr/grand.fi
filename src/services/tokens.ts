@@ -24,7 +24,9 @@ export async function fetchTokens() {
 
     if (!response.ok) {
       const errorMessage = `Failed to fetch token list: ${response.status}`;
-      console.error(`Error fetching token list from LI.FI API: ${response.status}`);
+      console.error(
+        `Error fetching token list from LI.FI API: ${response.status}`,
+      );
       throw new Error(errorMessage);
     }
 
@@ -32,27 +34,30 @@ export async function fetchTokens() {
     if (!data || !data.tokens) {
       throw new Error('Invalid token data received from API');
     }
-    
+
     // Convert LiFi tokens to our local token format with proper type handling
     const localTokensResponse: TokensResponse = {
-      tokens: Object.entries(data.tokens).reduce((acc, [chainId, tokens]) => {
-        const numericChainId = parseInt(chainId, 10);
-        acc[numericChainId] = tokens
-          .filter(token => token.logoURI && token.address && token.symbol)
-          .map(token => ({
-            address: token.address,
-            decimals: token.decimals,
-            symbol: token.symbol,
-            chainId: token.chainId,
-            coinKey: token.coinKey || '',
-            name: token.name,
-            logoURI: token.logoURI || '',
-            priceUSD: token.priceUSD,
-          }));
-        return acc;
-      }, {} as { [chainId: number]: TokensResponse['tokens'][number] })
+      tokens: Object.entries(data.tokens).reduce(
+        (acc, [chainId, tokens]) => {
+          const numericChainId = parseInt(chainId, 10);
+          acc[numericChainId] = tokens
+            .filter((token) => token.logoURI && token.address && token.symbol)
+            .map((token) => ({
+              address: token.address,
+              decimals: token.decimals,
+              symbol: token.symbol,
+              chainId: token.chainId,
+              coinKey: token.coinKey || '',
+              name: token.name,
+              logoURI: token.logoURI || '',
+              priceUSD: token.priceUSD,
+            }));
+          return acc;
+        },
+        {} as { [chainId: number]: TokensResponse['tokens'][number] },
+      ),
     };
-    
+
     return consolidateTokens(localTokensResponse.tokens);
   } catch (error) {
     console.error('Error fetching tokens:', error);

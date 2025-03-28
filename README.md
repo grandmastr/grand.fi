@@ -65,19 +65,16 @@ The main objective of this project is to create a user-friendly interface that a
   - Handles account and chain switching events
   - Manages connection persistence across sessions
   - Supports multiple connector types (injected, WalletConnect, Coinbase)
-  
 - **Solana Wallet Adapter**: For Solana blockchain connections
   - Supports Phantom, Solflare, and other Solana wallets
   - Handles transaction signing and message verification
   - Manages connection state and wallet capabilities
   - Implements proper error handling for failed connections
-  
 - **Bigmi**: For Bitcoin/UTXO wallet connections
   - Provides UTXO-based transaction construction
   - Handles BIP-standard derivation paths
   - Manages address formats and validation
   - Supports multiple Bitcoin wallet implementations
-  
 - **LI.FI SDK**: For cross-chain functionality and data
   - Provides unified token list across multiple chains
   - Handles token price and balance aggregation
@@ -89,16 +86,15 @@ The main objective of this project is to create a user-friendly interface that a
 The application follows a provider-based architecture with clear separation of concerns:
 
 1. **WalletProvider**: Root provider that orchestrates wallet connections across multiple blockchain ecosystems
+
    - **EVMProvider**: Handles Ethereum and other EVM-compatible chains
      - Implements Wagmi configuration with connector management
      - Synchronizes chain configurations with application state
      - Handles EIP-1193 events and connection lifecycle
-     
    - **SVMProvider**: Handles Solana blockchain
      - Configures RPC endpoints and network selection
      - Manages wallet adapter connection state
      - Handles Solana-specific transaction signing
-     
    - **UTXOProvider**: Handles Bitcoin and other UTXO-based chains
      - Manages Bitcoin wallet connections and state
      - Handles UTXO-specific address formats and validation
@@ -133,9 +129,9 @@ The application follows a provider-based architecture with clear separation of c
     - Balances: Short cache (30 seconds)
     - Chain data: Medium cache (2 minutes)
   - **Retry Logic**: Custom retry strategies for different API endpoints
-  
 - **Library-provided State Management**: The project leverages state management provided by libraries:
-  - **Wallet Connection State**: 
+
+  - **Wallet Connection State**:
     - Managed through @lifi/wallet-management
     - Handles connection persistence across sessions
     - Manages wallet capabilities and feature detection
@@ -242,7 +238,7 @@ Tests follow consistent patterns for mocking external dependencies:
 
 - **Decision**: Implemented a nested provider architecture to allow simultaneous connections to different blockchain ecosystems.
 - **Rationale**: This approach ensures that one wallet from each ecosystem can be connected at the same time, while maintaining isolation between different wallet types.
-- **Technical Implementation**: 
+- **Technical Implementation**:
   - Providers are composed in a specific order to ensure proper dependency resolution
   - Each provider implements a consistent interface for wallet operations
   - Event propagation is handled to ensure state consistency across providers
@@ -311,7 +307,7 @@ Tests follow consistent patterns for mocking external dependencies:
 ### Cross-Chain Compatibility
 
 - **Challenge**: Different blockchain ecosystems have different wallet connection mechanisms and data structures.
-- **Solution**: 
+- **Solution**:
   - Implemented separate providers for each ecosystem with a unified interface
   - Created abstraction layers to normalize wallet interactions
   - Implemented chain-specific error handling and recovery mechanisms
@@ -320,7 +316,7 @@ Tests follow consistent patterns for mocking external dependencies:
 ### Performance Optimization
 
 - **Challenge**: Displaying and updating large lists of tokens can be performance-intensive.
-- **Solution**: 
+- **Solution**:
   - Implemented virtualized rendering for token lists
   - Used efficient data structures for token consolidation
   - Implemented memoization for expensive calculations
@@ -330,7 +326,7 @@ Tests follow consistent patterns for mocking external dependencies:
 ### Balance Calculation
 
 - **Challenge**: Calculating balances across multiple chains and tokens requires multiple API calls.
-- **Solution**: 
+- **Solution**:
   - Implemented batched requests to minimize API calls
   - Used React Query for efficient caching and refetching
   - Implemented parallel fetching for different chains
@@ -340,7 +336,7 @@ Tests follow consistent patterns for mocking external dependencies:
 ### Testing Complexity
 
 - **Challenge**: Testing wallet connections requires mocking complex blockchain interactions.
-- **Solution**: 
+- **Solution**:
   - Implemented comprehensive mocking strategies for wallet providers
   - Created test utilities for common blockchain operations
   - Used Synpress for real wallet integration testing
@@ -350,7 +346,7 @@ Tests follow consistent patterns for mocking external dependencies:
 ### State Management Complexity
 
 - **Challenge**: Managing state across multiple blockchain ecosystems and UI components.
-- **Solution**: 
+- **Solution**:
   - Used React Query for server state management
   - Leveraged library-provided state management for wallet connections
   - Implemented clear state boundaries between different parts of the application
@@ -435,5 +431,5 @@ The following features and improvements would enhance the application but were n
 
 - [ ] Expand test coverage across all components
 - [ ] Add integration tests for key user flows
-- [ ] Implement better E2E testing 
+- [ ] Implement better E2E testing
 - [ ] Add performance testing benchmarks

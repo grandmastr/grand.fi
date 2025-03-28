@@ -10,11 +10,11 @@ import PortfolioAssetsSkeleton from './PortfolioAssetsSkeleton';
  * Loading indicator component that shows a circular progress
  */
 const BalanceLoadingIndicator = () => (
-  <Box 
-    sx={{ 
-      display: 'flex', 
+  <Box
+    sx={{
+      display: 'flex',
       justifyContent: 'end',
-      py: 2
+      py: 2,
     }}
   >
     <Tooltip title="Indexing wallet balances...">
@@ -47,18 +47,22 @@ const PortfolioAssets = () => {
   return (
     <>
       {isLoading && <BalanceLoadingIndicator />}
-      
+
       <PortfolioAssetsList
         tokens={tokensWithBalances}
         isLoading={isLoading}
-        progress={progress ? {
-          processed: progress.processed,
-          total: progress.total,
-          percentage: progress.percentage || 0,
-          tokensLoaded: tokensWithBalances?.length || 0
-        } : undefined}
+        progress={
+          progress
+            ? {
+                processed: progress.processed,
+                total: progress.total,
+                percentage: progress.percentage || 0,
+                tokensLoaded: tokensWithBalances?.length || 0,
+              }
+            : undefined
+        }
       />
-      
+
       {/* Show when no tokens are found */}
       {!isLoading && tokensWithBalances?.length === 0 && (
         <Box sx={{ padding: 3, textAlign: 'center' }}>

@@ -22,7 +22,8 @@ const copyToClipboard = async (text?: string): Promise<boolean> => {
     toast.success('Copied');
     return true;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
     console.error('Failed to copy text to clipboard:', errorMessage);
     toast.error('Failed to copy to clipboard');
     return false;

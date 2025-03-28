@@ -34,14 +34,16 @@ const ConnectButton = ({ sx }: ConnectButtonProps) => {
   // Access wallet menu functionality from LiFi
   const { openWalletMenu } = useWalletMenu();
   const { accounts } = useAccount();
-  
+
   // Start with default text to avoid hydration mismatch
   const [buttonText, setButtonText] = useState<string>('Connect Wallet');
 
   // Update button text after component has mounted
   useEffect(() => {
     const hasConnectedWallets = !!accounts.length;
-    setButtonText(hasConnectedWallets ? 'Connect Another Wallet' : 'Connect Wallet');
+    setButtonText(
+      hasConnectedWallets ? 'Connect Another Wallet' : 'Connect Wallet',
+    );
   }, [accounts.length]);
 
   /**
@@ -57,10 +59,10 @@ const ConnectButton = ({ sx }: ConnectButtonProps) => {
   };
 
   return (
-    <Button 
-      sx={sx} 
-      size="large" 
-      onClick={onClick} 
+    <Button
+      sx={sx}
+      size="large"
+      onClick={onClick}
       id={'connectButton'}
       data-testid="connect-wallet-button"
     >

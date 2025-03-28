@@ -9,9 +9,7 @@ function AllProviders({ children }: { children: React.ReactNode }) {
     <AppRouterCacheProvider>
       <ReactQueryProvider>
         <ThemeProvider>
-          <WalletProvider>
-            {children}
-          </WalletProvider>
+          <WalletProvider>{children}</WalletProvider>
         </ThemeProvider>
       </ReactQueryProvider>
     </AppRouterCacheProvider>
@@ -30,4 +28,4 @@ function customRender(
 export * from '@testing-library/react';
 
 // Override render method
-export { customRender as render }; 
+export { customRender as render };

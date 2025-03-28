@@ -4,7 +4,11 @@
  * This module provides a utility for consolidating tokens across multiple blockchain networks.
  * It transforms a chain-specific token map into a unified list of tokens with network information.
  */
-import { ConsolidatedToken, TokenNetwork, TokensResponse } from '@/types/tokens';
+import {
+  ConsolidatedToken,
+  TokenNetwork,
+  TokensResponse,
+} from '@/types/tokens';
 
 /**
  * Creates a unique key for a token combining symbol and chainId to handle same-symbol tokens
@@ -58,7 +62,8 @@ const consolidateTokens = (
         const existingToken = tokensByKey.get(tokenKey);
         if (existingToken) {
           const networkExists = existingToken.networks.some(
-            (n: TokenNetwork) => n.chainId === chainId && n.address === token.address
+            (n: TokenNetwork) =>
+              n.chainId === chainId && n.address === token.address,
           );
           if (!networkExists) {
             existingToken.networks.push({
@@ -71,10 +76,12 @@ const consolidateTokens = (
         // Create new token entry with required fields
         const consolidatedToken: ConsolidatedToken = {
           ...tokenData,
-          networks: [{
-            chainId,
-            address: token.address,
-          }],
+          networks: [
+            {
+              chainId,
+              address: token.address,
+            },
+          ],
           id: tokenKey,
           sortKey: token.symbol.toLowerCase(),
         };

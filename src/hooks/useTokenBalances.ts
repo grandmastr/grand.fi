@@ -36,10 +36,12 @@ export interface BalanceProgress {
 /**
  * Extract connected chain types from accounts
  */
-export const useConnectedChainTypes = (accounts: { chainType: ChainType }[]) => {
+export const useConnectedChainTypes = (
+  accounts: { chainType: ChainType }[],
+) => {
   return useMemo(() => {
     return Array.from(
-      new Set(accounts.map((account) => account.chainType))
+      new Set(accounts.map((account) => account.chainType)),
     ) as ChainType[];
   }, [accounts]);
 };
@@ -47,9 +49,14 @@ export const useConnectedChainTypes = (accounts: { chainType: ChainType }[]) => 
 /**
  * Extract wallet addresses grouped by chain type
  */
-export const useWalletAddresses = (accounts: { address?: string; chainType: ChainType }[]) => {
+export const useWalletAddresses = (
+  accounts: { address?: string; chainType: ChainType }[],
+) => {
   return useMemo(() => {
-    const addresses: Record<ChainType, string[]> = {} as Record<ChainType, string[]>;
+    const addresses: Record<ChainType, string[]> = {} as Record<
+      ChainType,
+      string[]
+    >;
 
     // Initialize with empty arrays for all chain types
     Object.values(ChainType).forEach((chainType) => {
@@ -73,9 +80,11 @@ export const useWalletAddresses = (accounts: { address?: string; chainType: Chai
 /**
  * Group tokens with the same symbol to consolidate balances
  */
-export const groupTokensBySymbol = (tokens: TokenWithBalance[]): TokenWithBalance[] => {
+export const groupTokensBySymbol = (
+  tokens: TokenWithBalance[],
+): TokenWithBalance[] => {
   const grouped: Record<string, TokenWithBalance> = {};
-  
+
   tokens.forEach((token: TokenWithBalance) => {
     const key = token.symbol;
     if (!grouped[key]) {
@@ -85,23 +94,27 @@ export const groupTokensBySymbol = (tokens: TokenWithBalance[]): TokenWithBalanc
       Object.keys(token.balances).forEach((chainKey: string) => {
         const numericChainKey = Number(chainKey);
         if (grouped[key].balances[numericChainKey]) {
-          grouped[key].balances[numericChainKey].valueUSD += token.balances[numericChainKey].valueUSD;
+          grouped[key].balances[numericChainKey].valueUSD +=
+            token.balances[numericChainKey].valueUSD;
         } else {
-          grouped[key].balances[numericChainKey] = token.balances[numericChainKey];
+          grouped[key].balances[numericChainKey] =
+            token.balances[numericChainKey];
         }
       });
     }
   });
-  
+
   return Object.values(grouped);
 };
 
 /**
  * Create a map of chainId -> token[] for easier lookup
  */
-export const organizeTokensByChain = (tokens: ConsolidatedToken[]): Record<number, ConsolidatedToken[]> => {
+export const organizeTokensByChain = (
+  tokens: ConsolidatedToken[],
+): Record<number, ConsolidatedToken[]> => {
   const tokensByChain: Record<number, ConsolidatedToken[]> = {};
-  
+
   tokens.forEach((token) => {
     token.networks.forEach((network) => {
       const { chainId } = network;
@@ -111,7 +124,7 @@ export const organizeTokensByChain = (tokens: ConsolidatedToken[]): Record<numbe
       tokensByChain[chainId].push(token);
     });
   });
-  
+
   return tokensByChain;
 };
 
@@ -119,8 +132,8 @@ export const organizeTokensByChain = (tokens: ConsolidatedToken[]): Record<numbe
  * Filter tokens for a specific chain
  */
 export const prepareTokensForChain = (
-  tokens: ConsolidatedToken[], 
-  chainId: number
+  tokens: ConsolidatedToken[],
+  chainId: number,
 ): any[] => {
   return tokens
     .map((token) => {
@@ -147,12 +160,12 @@ export const prepareTokensForChain = (
 export const processTokenBalances = (
   chainId: number,
   balances: Record<number, TokenAmount[]>,
-  enrichedTokens: TokenWithBalance[]
+  enrichedTokens: TokenWithBalance[],
 ): TokenWithBalance[] => {
   if (!balances[chainId]) return enrichedTokens;
-  
+
   const updatedTokens = [...enrichedTokens];
-  
+
   balances[chainId].forEach((balance: TokenAmount) => {
     if (!balance.amount || balance.amount === 0n) return;
 
@@ -160,13 +173,14 @@ export const processTokenBalances = (
       token.networks.some(
         (n) =>
           n.chainId === chainId &&
-          n.address.toLowerCase() === balance.address.toLowerCase()
-      )
+          n.address.toLowerCase() === balance.address.toLowerCase(),
+      ),
     );
 
     if (matchingToken) {
       const formattedAmount = formatUnits(balance.amount, balance.decimals);
-      const valueUSD = parseFloat(formattedAmount) * parseFloat(balance.priceUSD || '0');
+      const valueUSD =
+        parseFloat(formattedAmount) * parseFloat(balance.priceUSD || '0');
 
       if (!matchingToken.balances[chainId]) {
         matchingToken.balances[chainId] = {
@@ -177,20 +191,23 @@ export const processTokenBalances = (
         };
       } else {
         const existingBalance = matchingToken.balances[chainId];
-        matchingToken.balances[chainId].valueUSD = existingBalance.valueUSD + valueUSD;
+        matchingToken.balances[chainId].valueUSD =
+          existingBalance.valueUSD + valueUSD;
       }
 
       matchingToken.totalValueUSD += valueUSD;
     }
   });
-  
+
   return updatedTokens;
 };
 
 /**
  * Sort tokens by their total USD value in descending order
  */
-export const sortTokensByValue = (tokens: TokenWithBalance[]): TokenWithBalance[] => {
+export const sortTokensByValue = (
+  tokens: TokenWithBalance[],
+): TokenWithBalance[] => {
   return [...tokens].sort((a, b) => b.totalValueUSD - a.totalValueUSD);
 };
 
@@ -198,26 +215,29 @@ export const sortTokensByValue = (tokens: TokenWithBalance[]): TokenWithBalance[
  * Hook to fetch balances for a specific wallet on a specific chain
  */
 export const useFetchChainBalances = () => {
-  return useCallback(async (
-    walletAddress: string,
-    chainId: number,
-    tokensOnChain: any[]
-  ): Promise<Record<number, TokenAmount[]>> => {
-    if (!tokensOnChain.length) {
-      return { [chainId]: [] };
-    }
-    
-    try {
-      // Create batch structure for getTokenBalancesByChain
-      const batchTokensByChain = { [chainId]: tokensOnChain };
-      
-      // Get balances
-      return await getTokenBalancesByChain(walletAddress, batchTokensByChain);
-    } catch (err) {
-      console.error(`Error fetching balances for chain ${chainId}:`, err);
-      return { [chainId]: [] };
-    }
-  }, []);
+  return useCallback(
+    async (
+      walletAddress: string,
+      chainId: number,
+      tokensOnChain: any[],
+    ): Promise<Record<number, TokenAmount[]>> => {
+      if (!tokensOnChain.length) {
+        return { [chainId]: [] };
+      }
+
+      try {
+        // Create batch structure for getTokenBalancesByChain
+        const batchTokensByChain = { [chainId]: tokensOnChain };
+
+        // Get balances
+        return await getTokenBalancesByChain(walletAddress, batchTokensByChain);
+      } catch (err) {
+        console.error(`Error fetching balances for chain ${chainId}:`, err);
+        return { [chainId]: [] };
+      }
+    },
+    [],
+  );
 };
 
 /**
@@ -228,10 +248,15 @@ export const useTokenBalances = () => {
   const { accounts } = useAccount();
   const { data: tokens, isLoading: tokensLoading } = useTokens();
   const { groupedChains } = useChainTypes();
-  const [tokensWithBalances, setTokensWithBalances] = useState<TokenWithBalance[]>([]);
+  const [tokensWithBalances, setTokensWithBalances] = useState<
+    TokenWithBalance[]
+  >([]);
   const [isLoadingBalances, setIsLoadingBalances] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [progress, setProgress] = useState<{ processed: number; total: number }>({ processed: 0, total: 0 });
+  const [progress, setProgress] = useState<{
+    processed: number;
+    total: number;
+  }>({ processed: 0, total: 0 });
 
   // Use extracted hooks
   const connectedChainTypes = useConnectedChainTypes(accounts);
@@ -265,7 +290,7 @@ export const useTokenBalances = () => {
 
         // Process each ecosystem in parallel
         const allPromises: Promise<void>[] = [];
-        
+
         for (const ecosystem of connectedChainTypes) {
           const wallets = walletAddresses[ecosystem];
 
@@ -290,22 +315,22 @@ export const useTokenBalances = () => {
 
               // Process in batches
               const BATCH_SIZE = 20;
-              
+
               for (let i = 0; i < chainTokens.length; i += BATCH_SIZE) {
                 const batchTokens = prepareTokensForChain(
                   chainTokens.slice(i, i + BATCH_SIZE),
-                  chainId
+                  chainId,
                 );
-                
+
                 if (!batchTokens.length) continue;
 
                 const promise = (async () => {
                   try {
                     // Get balances for this batch
                     const batchBalances = await fetchChainBalances(
-                      walletAddress, 
-                      chainId, 
-                      batchTokens
+                      walletAddress,
+                      chainId,
+                      batchTokens,
                     );
 
                     // Update processed count
@@ -318,20 +343,20 @@ export const useTokenBalances = () => {
                     const updatedTokens = processTokenBalances(
                       chainId,
                       batchBalances,
-                      enrichedTokens
+                      enrichedTokens,
                     );
 
                     // Group and sort tokens
                     const groupedTokens = groupTokensBySymbol(updatedTokens);
                     const sortedTokens = sortTokensByValue(groupedTokens);
-                    
+
                     // Update state
                     setTokensWithBalances(sortedTokens);
                   } catch (error) {
                     console.error('Error processing batch:', error);
                   }
                 })();
-                
+
                 allPromises.push(promise);
               }
             }

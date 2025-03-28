@@ -34,7 +34,7 @@ const getBalance = (tokenBalance: Partial<TokenAmount>): number => {
   return tokenBalance?.amount && tokenBalance?.decimals
     ? Number(formatUnits(tokenBalance.amount, tokenBalance.decimals))
     : 0;
-}
+};
 
 /**
  * Fetches supported blockchain chains from LI.FI API
@@ -100,19 +100,16 @@ export const useChainTypes = (): ChainGroups => {
   const { chains } = useChains();
 
   // Group chains by their chainType property
-  const groupedChains = useMemo(
-    () => {
-      const groups: { [key in ChainType]?: ExtendedChain[] } = {};
-      chains.forEach(chain => {
-        if (!groups[chain.chainType]) {
-          groups[chain.chainType] = [];
-        }
-        groups[chain.chainType]?.push(chain);
-      });
-      return groups;
-    },
-    [chains],
-  );
+  const groupedChains = useMemo(() => {
+    const groups: { [key in ChainType]?: ExtendedChain[] } = {};
+    chains.forEach((chain) => {
+      if (!groups[chain.chainType]) {
+        groups[chain.chainType] = [];
+      }
+      groups[chain.chainType]?.push(chain);
+    });
+    return groups;
+  }, [chains]);
 
   return { groupedChains };
 };

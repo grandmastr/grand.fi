@@ -1,5 +1,12 @@
 import { Chain, TokenAmount } from '@lifi/sdk';
-import { Box, Card, CardContent, Typography, Avatar, Stack } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Avatar,
+  Stack,
+} from '@mui/material';
 import { formatUnits } from 'viem';
 import { styled } from '@mui/material/styles';
 
@@ -24,20 +31,23 @@ interface PortfolioAssetProps {
 
 /**
  * PortfolioAsset component displays individual token information in a card format
- * 
+ *
  * @component
  * @param {PortfolioAssetProps} props - Component props
  * @param {TokenAmount} props.token - Token data to display
  * @param {Chain} [props.chain] - Optional chain information
- * 
+ *
  * @returns {JSX.Element} Rendered component
- * 
+ *
  * @example
  * ```tsx
  * <PortfolioAsset token={tokenData} chain={chainData} />
  * ```
  */
-export const PortfolioAsset = ({ token, chain }: PortfolioAssetProps): JSX.Element => {
+export const PortfolioAsset = ({
+  token,
+  chain,
+}: PortfolioAssetProps): JSX.Element => {
   const formattedAmount = token.amount
     ? formatUnits(BigInt(token.amount), token.decimals)
     : '0';
@@ -67,9 +77,7 @@ export const PortfolioAsset = ({ token, chain }: PortfolioAssetProps): JSX.Eleme
           {/* Amount and Chain Information */}
           <Stack direction="row" spacing={2} alignItems="center">
             <Box textAlign="right">
-              <Typography variant="subtitle1">
-                {formattedAmount}
-              </Typography>
+              <Typography variant="subtitle1">{formattedAmount}</Typography>
               {chain && (
                 <Typography variant="body2" color="text.secondary">
                   {chain.name}
@@ -80,10 +88,10 @@ export const PortfolioAsset = ({ token, chain }: PortfolioAssetProps): JSX.Eleme
               <StyledAvatar
                 src={chain.logoURI}
                 alt={chain.name}
-                sx={{ 
-                  width: 24, 
+                sx={{
+                  width: 24,
                   height: 24,
-                  borderRadius: '50%'
+                  borderRadius: '50%',
                 }}
               />
             )}
@@ -92,4 +100,4 @@ export const PortfolioAsset = ({ token, chain }: PortfolioAssetProps): JSX.Eleme
       </CardContent>
     </Card>
   );
-}; 
+};

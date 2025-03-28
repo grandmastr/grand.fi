@@ -1,6 +1,14 @@
 'use client';
 import { useMemo, useEffect, useState } from 'react';
-import { Badge, Skeleton, Stack, Tooltip, Typography, colors, CircularProgress } from '@mui/material';
+import {
+  Badge,
+  Skeleton,
+  Stack,
+  Tooltip,
+  Typography,
+  colors,
+  CircularProgress,
+} from '@mui/material';
 import {
   type Account,
   getConnectorIcon,
@@ -23,10 +31,20 @@ import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
 import { PortfolioWalletSkeleton } from './PortfolioWalletSkeleton';
 
 // Add loading progress indicator
-const LoadingProgress = ({ completed, total }: { completed: number; total: number }) => {
+const LoadingProgress = ({
+  completed,
+  total,
+}: {
+  completed: number;
+  total: number;
+}) => {
   const progress = (completed / total) * 100;
   return (
-    <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+    <Typography
+      variant="caption"
+      color="text.secondary"
+      sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+    >
       <CircularProgress size={16} variant="determinate" value={progress} />
       Loading tokens ({completed}/{total})
     </Typography>
@@ -37,7 +55,7 @@ const PortfolioWallet = () => {
   const { accounts } = useAccount();
   // Use state to track if we've mounted on the client
   const [isMounted, setIsMounted] = useState(false);
-  
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -112,10 +130,7 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
                 alt={`${account.chainType} wallet`}
               />
             </Badge>
-            <Typography
-              variant="subtitle2"
-              data-testid="wallet-address"
-            >
+            <Typography variant="subtitle2" data-testid="wallet-address">
               {createWalletAbbr(account.address)}
             </Typography>
           </Stack>
@@ -137,7 +152,9 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
               aria-label="Copy Address"
               onClick={() => copyToClipboard(account.address)}
             >
-              <ContentCopyIcon sx={{ fontSize: 'inherit', color: colors.grey[200] }} />
+              <ContentCopyIcon
+                sx={{ fontSize: 'inherit', color: colors.grey[200] }}
+              />
             </IconButtonWrapper>
           </Tooltip>
           <Tooltip title="Open in Explorer">

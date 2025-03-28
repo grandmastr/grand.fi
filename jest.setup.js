@@ -23,4 +23,4 @@ console.error = (...args) => {
     return;
   }
   originalConsoleError(...args);
-}; 
+};

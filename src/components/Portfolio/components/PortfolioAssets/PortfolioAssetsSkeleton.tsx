@@ -7,7 +7,7 @@ import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
 /**
  * Skeleton loader for portfolio assets list
  * Displays placeholder loading animations while assets are being fetched
- * 
+ *
  * @returns {JSX.Element} Skeleton UI for assets list
  */
 const PortfolioAssetsSkeleton = (): JSX.Element => {
@@ -58,4 +58,4 @@ const PortfolioAssetsSkeleton = (): JSX.Element => {
   );
 };
 
-export default PortfolioAssetsSkeleton; 
+export default PortfolioAssetsSkeleton;
