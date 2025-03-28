@@ -4,19 +4,25 @@
  * This module provides a utility for consolidating tokens across multiple blockchain networks.
  * It transforms a chain-specific token map into a unified list of tokens with network information.
  */
-import { ConsolidatedToken, TokensResponse } from '@/types/tokens';
+import { ConsolidatedToken, TokenNetwork, TokensResponse } from '@/types/tokens';
+
+/**
+ * Creates a unique key for a token combining symbol and chainId to handle same-symbol tokens
+ * @param symbol Token symbol
+ * @param chainId Chain ID
+ * @returns Unique token identifier
+ */
+const createTokenKey = (symbol: string, chainId: number): string => {
+  return `${symbol}-${chainId}`;
+};
 
 /**
  * Consolidates tokens from multiple chains into a unified token list
  *
- * Merges duplicate tokens (identified by symbol) across different blockchain networks
- * into single token objects with multiple network entries. This is useful for:
- * - Creating unified token selectors in the UI
- * - Preventing duplicate token entries in lists
- * - Maintaining cross-chain token relationships
- *
- * The function uses a Map with O(1) lookups to efficiently process potentially
- * large token lists across multiple chains.
+ * Merges tokens across different blockchain networks while handling:
+ * - Tokens with the same symbol on different chains
+ * - Missing or invalid token data
+ * - Network information preservation
  *
  * @param {TokensResponse['tokens']} tokensMap - Map of tokens organized by chainId
  * @returns {ConsolidatedToken[]} Array of consolidated tokens with network information
@@ -24,50 +30,60 @@ import { ConsolidatedToken, TokensResponse } from '@/types/tokens';
 const consolidateTokens = (
   tokensMap: TokensResponse['tokens'],
 ): ConsolidatedToken[] => {
-  if (!tokensMap) {
+  if (!tokensMap || typeof tokensMap !== 'object') {
     return [];
   }
-  // Using a map for O(1) lookups by symbols to have and maintain unique tokens regardless of network
-  const tokensBySymbol = new Map<string, ConsolidatedToken>();
 
-  // Since keys are strings, and chainIds are numbers, there's a need to parse them into integers for accurate typing
-  const chainIds: number[] = Object.keys(tokensMap).map((chainId) =>
-    parseInt(chainId),
-  );
+  // Using a map with composite key (symbol-chainId) for unique token identification
+  const tokensByKey = new Map<string, ConsolidatedToken>();
+
+  // Convert string chainIds to numbers and validate
+  const chainIds = Object.keys(tokensMap)
+    .map((id) => parseInt(id, 10))
+    .filter((id) => !isNaN(id));
 
   // Process tokens from each chain
   for (const chainId of chainIds) {
     const tokensForChain = tokensMap[chainId];
+    if (!Array.isArray(tokensForChain)) continue;
 
     for (const token of tokensForChain) {
-      const { symbol, address, chainId: _chainId, ...restToken } = token;
+      if (!token.symbol || !token.address) continue;
 
-      if (tokensBySymbol.has(symbol)) {
-        // If this token already exists, simply update the networks list
-        const existingToken = tokensBySymbol.get(symbol);
-        existingToken?.networks.push({
-          chainId,
-          address,
-        });
+      const tokenKey = createTokenKey(token.symbol, chainId);
+      const { chainId: tokenChainId, ...tokenData } = token;
+
+      if (tokensByKey.has(tokenKey)) {
+        // Update existing token's networks
+        const existingToken = tokensByKey.get(tokenKey);
+        if (existingToken) {
+          const networkExists = existingToken.networks.some(
+            (n: TokenNetwork) => n.chainId === chainId && n.address === token.address
+          );
+          if (!networkExists) {
+            existingToken.networks.push({
+              chainId,
+              address: token.address,
+            });
+          }
+        }
       } else {
-        // Set a new token entry
-        tokensBySymbol.set(symbol, {
-          ...restToken,
-          symbol,
-          address: token.address,
-          networks: [
-            {
-              chainId: _chainId,
-              address,
-            },
-          ],
-        });
+        // Create new token entry with required fields
+        const consolidatedToken: ConsolidatedToken = {
+          ...tokenData,
+          networks: [{
+            chainId,
+            address: token.address,
+          }],
+          id: tokenKey,
+          sortKey: token.symbol.toLowerCase(),
+        };
+        tokensByKey.set(tokenKey, consolidatedToken);
       }
     }
   }
 
-  // Returns a list of consolidated tokens
-  return Array.from(tokensBySymbol.values());
+  return Array.from(tokensByKey.values());
 };
 
 export default consolidateTokens;

@@ -1,14 +1,15 @@
 import { Box, Typography } from '@mui/material';
-import { TokenAmount } from '@lifi/sdk';
-import { formatCurrency } from '@/utils/format';
+import type { TokenWithBalance } from '@/hooks/useTokenBalances';
+import { formatCurrency } from '../../../utils/format';
 
 interface PortfolioAssetsListItemProps {
-  token: TokenAmount;
+  token: TokenWithBalance;
 }
 
 export function PortfolioAssetsListItem({ token }: PortfolioAssetsListItemProps) {
-  const balance = parseFloat(token.amount?.toString() || '0') / 10 ** token.decimals;
-  const value = balance * parseFloat(token.priceUSD || '0');
+  const aggregatedAmount = Object.values(token.balances || {}).reduce((sum, b) => sum + parseFloat(b.amount), 0);
+  const balance = aggregatedAmount / (10 ** token.decimals);
+  const value = token.totalValueUSD || (balance * parseFloat(token.priceUSD || '0'));
 
   return (
     <Box
@@ -41,7 +42,7 @@ export function PortfolioAssetsListItem({ token }: PortfolioAssetsListItemProps)
         <Box>
           <Typography variant="subtitle1">{token.symbol}</Typography>
           <Typography variant="body2" color="text.secondary">
-            {token.name}
+            {token.name}({token.balances ? Object.keys(token.balances).length : 1} networks)
           </Typography>
         </Box>
       </Box>

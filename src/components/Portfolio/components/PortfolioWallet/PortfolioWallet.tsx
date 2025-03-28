@@ -8,7 +8,7 @@ import {
   useAccountDisconnect,
 } from '@lifi/wallet-management';
 import { copyToClipboard, createWalletAbbr, openInExplorer } from '@/utils';
-import { useChains, useEcosystemBalance } from '@/hooks';
+import { useChains } from '@/hooks';
 import {
   IconButtonWrapper,
   WalletAvatar,
@@ -20,50 +20,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { ConnectButton } from '@/components';
 import { useTheme } from '@mui/material';
 import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
-
-/**
- * Skeleton loader for the wallet card
- * Displays placeholder animations while wallet data is loading
- */
-export const PortfolioWalletSkeleton = () => {
-  return (
-    <PortfolioBox sx={{ height: '9.5rem'}}>
-      <Stack spacing={1} sx={{ height: '100%', padding: '1rem'}}>
-        <Stack
-          direction={'row'}
-          justifyContent="space-between"
-          alignItems={'center'}
-          sx={{ height: '2.5rem'}}
-        >
-          <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Skeleton variant="circular" width={'2.5rem'} height={'2.5rem'} animation="wave" />
-            <Skeleton variant="text" width={'7.5rem'} height={'1.5rem'} animation="wave" />
-          </Stack>
-          <Skeleton variant="circular" width={'1.25rem'} height={'1.25rem'} animation="wave" />
-        </Stack>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ px: 0.5, height: '1.5rem'}}
-        >
-          <Skeleton variant="text" width={'5rem'} height={'1.25rem'} animation="wave" />
-          <Skeleton variant="text" width={'3.75rem'} height={'1.5rem'} animation="wave" />
-        </Stack>
-
-        <Stack
-          direction={'row'}
-          spacing={1}
-          sx={{ height: '1.75rem'}}
-        >
-          <Skeleton variant="circular" width={'1.75rem'} height={'1.75rem'} animation="wave" />
-          <Skeleton variant="circular" width={'1.75rem'} height={'1.75rem'} animation="wave" />
-          <Skeleton variant="circular" width={'1.75rem'} height={'1.75rem'} animation="wave" />
-        </Stack>
-      </Stack>
-    </PortfolioBox>
-  );
-};
+import { PortfolioWalletSkeleton } from './PortfolioWalletSkeleton';
 
 // Add loading progress indicator
 const LoadingProgress = ({ completed, total }: { completed: number; total: number }) => {
@@ -104,23 +61,12 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
     [chains, account.chainId],
   );
 
-  // Get ecosystem balance data with loading state and progress
-  const { isLoading: balanceLoading, balance, progress } = useEcosystemBalance(
-    account?.address,
-    activeChain?.chainType
-  );
-
   // Show skeleton if chains aren't loaded yet
   if (!chainsLoaded) {
     return <PortfolioWalletSkeleton />;
   }
 
   if (!isWalletConnected) return null;
-
-  // Format the balance to display with 2 decimal places
-  const formattedBalance = balance ?
-    `$${balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` :
-    '$0.00';
 
   // Get the wallet icon using getConnectorIcon from @lifi/wallet-management
   const walletIcon = getConnectorIcon(account.connector);
@@ -174,6 +120,7 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
             <Skeleton variant="circular" width={'1.25rem'} height={'1.25rem'} />
           )}
         </Stack>
+
         <Stack direction={'row'} spacing={1}>
           <Tooltip title={'Copy Address'}>
             <IconButtonWrapper

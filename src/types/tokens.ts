@@ -19,7 +19,14 @@ export interface TokensResponse {
   };
 }
 
-export interface ConsolidatedToken extends TokenAmount {
+// Define a network entry for consolidated tokens
+export interface TokenNetwork {
+  chainId: number;
+  address: string;
+}
+
+export interface ConsolidatedToken extends Token {
   id: string;
   sortKey: string;
+  networks: TokenNetwork[];
 }

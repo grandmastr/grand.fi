@@ -4,14 +4,10 @@ import {
   ChainType,
   ExtendedChain,
   getChains,
-  getTokens,
-  getTokenBalancesByChain,
   TokenAmount,
-  Token,
 } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
 import { formatUnits } from 'viem';
-import { fetchTokenBalancesBatched, calculateCumulativeBalances } from '@/utils/portfolio/fetchTokenBalancesBatched';
 
 /**
  * Chain data access interface
@@ -34,7 +30,7 @@ export interface ChainGroups {
 }
 
 // Utility function to get human readable balance
-function getBalance(tokenBalance: Partial<TokenAmount>): number {
+const getBalance = (tokenBalance: Partial<TokenAmount>): number => {
   return tokenBalance?.amount && tokenBalance?.decimals
     ? Number(formatUnits(tokenBalance.amount, tokenBalance.decimals))
     : 0;
@@ -119,89 +115,4 @@ export const useChainTypes = (): ChainGroups => {
   );
 
   return { groupedChains };
-};
-
-/**
- * Hook to fetch and calculate total balance for a specific ecosystem (chain type)
- * Uses batched loading for better performance and rate limiting
- */
-export const useEcosystemBalance = (
-  walletAddress: string | undefined,
-  ecosystem: ChainType | undefined,
-): {
-  balance: number;
-  isLoading: boolean;
-  isSuccess: boolean;
-  progress?: { completed: number; total: number };
-} => {
-  const { groupedChains } = useChainTypes();
-  const [totalBalance, setTotalBalance] = useState<number>(0);
-  const [progress, setProgress] = useState<{ completed: number; total: number }>();
-
-  const { data, isSuccess, isLoading } = useQuery<number>({
-    queryKey: ['ecosystem_balance', walletAddress, ecosystem],
-    queryFn: async () => {
-      if (!walletAddress || !ecosystem) {
-        return 0;
-      }
-
-      const chainsInEcosystem = groupedChains[ecosystem] || [];
-      if (!chainsInEcosystem.length) {
-        return 0;
-      }
-
-      try {
-        // Get tokens for this ecosystem type only
-        const tokensResponse = await getTokens({
-          chainTypes: [ecosystem],
-        });
-
-        // Create a map of chain IDs to their tokens
-        const tokensByChain: Record<string, Token[]> = {};
-        chainsInEcosystem.forEach((chain) => {
-          const chainTokens = tokensResponse.tokens[chain.id];
-          if (chainTokens?.length) {
-            tokensByChain[chain.id.toString()] = chainTokens;
-          }
-        });
-
-        // Fetch balances in batches
-        const balances = await fetchTokenBalancesBatched(
-          walletAddress,
-          tokensByChain,
-          (completed, total) => setProgress({ completed, total })
-        );
-
-        // Calculate total ecosystem balance
-        let ecosystemBalance = 0;
-        balances.forEach((token) => {
-          const humanReadableBalance = Number(formatUnits(token.amount || 0n, token.decimals));
-          const tokenUsdValue = humanReadableBalance * Number(token.priceUSD || 0);
-          ecosystemBalance += tokenUsdValue;
-        });
-
-        return ecosystemBalance;
-      } catch (error) {
-        console.error(`Error fetching ${ecosystem} ecosystem balance:`, error);
-        return 0;
-      }
-    },
-    enabled: !!(walletAddress && ecosystem && (groupedChains[ecosystem]?.length ?? 0) > 0),
-    refetchInterval: 60000,
-    refetchIntervalInBackground: false,
-    staleTime: 30000,
-  });
-
-  useEffect(() => {
-    if (isSuccess && typeof data === 'number') {
-      setTotalBalance(data);
-    }
-  }, [isSuccess, data]);
-
-  return {
-    balance: totalBalance,
-    isLoading,
-    isSuccess,
-    progress,
-  };
 };
