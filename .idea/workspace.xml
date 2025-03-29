@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="528a03f0-a3c7-41a8-8fff-798814c3a373" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/PortfolioAssetsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/PortfolioAssetsList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/PortfolioAssetsListSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/PortfolioAssetsListSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/walletConnect.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/walletConnect.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +107,8 @@
       <workItem from="1743177191637" duration="16486000" />
       <workItem from="1743213043987" duration="4521000" />
       <workItem from="1743218183789" duration="2476000" />
-      <workItem from="1743254733532" duration="2265000" />
+      <workItem from="1743254733532" duration="3206000" />
+      <workItem from="1743258867866" duration="584000" />
     </task>
     <servers />
   </component>
