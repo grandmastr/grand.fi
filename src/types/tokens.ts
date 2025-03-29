@@ -25,6 +25,13 @@ export interface TokenNetwork {
 
 export interface ConsolidatedToken extends Token {
   id: string;
+  symbol: string;
+  address: string;
+  coinKey: string;
   sortKey: string;
+  priceUSD: string;
+  decimals: number;
+  name: string;
+  logoURI: string;
   networks: TokenNetwork[];
 }

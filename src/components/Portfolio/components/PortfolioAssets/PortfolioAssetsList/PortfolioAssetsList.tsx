@@ -40,18 +40,17 @@ const TokenRow = React.memo(
   ({
     token,
     virtualRow,
-    theme,
     spacing,
   }: {
     token: TokenWithBalance;
-    virtualRow: any;
-    theme: any;
+    virtualRow: VirtualItem;
     spacing: number;
   }) => {
     // Get first balance for display, safely handle undefined case
     const balanceEntries = Object.entries(token.balances || {});
     const hasBalances = balanceEntries.length > 0;
     const firstBalance = hasBalances ? balanceEntries[0][1] : undefined;
+    const theme = useTheme();
 
     return (
       <PortfolioBox

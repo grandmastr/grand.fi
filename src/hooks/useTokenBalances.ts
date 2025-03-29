@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccount } from '@lifi/wallet-management';
-import { ChainType, getTokenBalancesByChain, TokenAmount } from '@lifi/sdk';
+import { ChainType, getTokenBalancesByChain, Token, TokenAmount } from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import { ConsolidatedToken } from '@/types/tokens';
 import { useChainTypes, useTokens } from '@/hooks';
@@ -134,7 +134,7 @@ export const organizeTokensByChain = (
 export const prepareTokensForChain = (
   tokens: ConsolidatedToken[],
   chainId: number,
-): any[] => {
+): Token[] => {
   return tokens
     .map((token) => {
       const network = token.networks.find((n) => n.chainId === chainId);
@@ -149,9 +149,9 @@ export const prepareTokensForChain = (
         logoURI: token.logoURI,
         priceUSD: token.priceUSD,
         coinKey: token.coinKey,
-      };
+      } as Token;
     })
-    .filter(Boolean);
+    .filter(Boolean) as Token[];
 };
 
 /**
@@ -219,7 +219,7 @@ export const useFetchChainBalances = () => {
     async (
       walletAddress: string,
       chainId: number,
-      tokensOnChain: any[],
+      tokensOnChain: Token[],
     ): Promise<Record<number, TokenAmount[]>> => {
       if (!tokensOnChain.length) {
         return { [chainId]: [] };

@@ -55,7 +55,7 @@ const consolidateTokens = (
       if (!token.symbol || !token.address) continue;
 
       const tokenKey = createTokenKey(token.symbol, chainId);
-      const { chainId: tokenChainId, ...tokenData } = token;
+      const { ...tokenData } = token;
 
       if (tokensByKey.has(tokenKey)) {
         // Update existing token's networks
