@@ -8,7 +8,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { TokenWithBalance } from '@/hooks/useTokenBalances';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { useVirtualizer, VirtualItem } from '@tanstack/react-virtual';
 import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
 import { WalletAvatar } from '../../../components/PortfolioWallet/PortfolioWallet.style';
 import { PortfolioAssetsListSkeleton } from './PortfolioAssetsListSkeleton';
@@ -240,7 +240,6 @@ export const PortfolioAssetsList = ({
                 key={virtualRow.key}
                 token={token}
                 virtualRow={virtualRow}
-                theme={theme}
                 spacing={spacingPx}
               />
             );
