@@ -1,13 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
-import {
-  ChainId,
-  ChainType,
-  ExtendedChain,
-  getChains,
-  TokenAmount,
-} from '@lifi/sdk';
+import { useMemo } from 'react';
+import { ChainId, ChainType, ExtendedChain, getChains } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
-import { formatUnits } from 'viem';
 
 /**
  * Chain data access interface
@@ -28,13 +21,6 @@ export interface ChainGroups {
     [chainType in ChainType]?: ExtendedChain[];
   };
 }
-
-// Utility function to get human readable balance
-const getBalance = (tokenBalance: Partial<TokenAmount>): number => {
-  return tokenBalance?.amount && tokenBalance?.decimals
-    ? Number(formatUnits(tokenBalance.amount, tokenBalance.decimals))
-    : 0;
-};
 
 /**
  * Fetches supported blockchain chains from LI.FI API

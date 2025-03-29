@@ -1,10 +1,9 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccount } from '@lifi/wallet-management';
-import { ChainType, TokenAmount, getTokenBalancesByChain } from '@lifi/sdk';
+import { ChainType, getTokenBalancesByChain, TokenAmount } from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import { ConsolidatedToken } from '@/types/tokens';
-import { useTokens } from '@/hooks';
-import { useChainTypes } from '@/hooks';
+import { useChainTypes, useTokens } from '@/hooks';
 
 /**
  * Interface for a token balance
@@ -249,13 +248,15 @@ export const useTokenBalances = () => {
   const { data: tokens, isLoading: tokensLoading } = useTokens();
   const { accounts } = useAccount();
   const { groupedChains } = useChainTypes();
-  const [tokensWithBalances, setTokensWithBalances] = useState<TokenWithBalance[]>([]);
+  const [tokensWithBalances, setTokensWithBalances] = useState<
+    TokenWithBalance[]
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [progress, setProgress] = useState<BalanceProgress>({
     processed: 0,
     total: 0,
-    percentage: 0
+    percentage: 0,
   });
 
   // Use extracted hooks
@@ -270,10 +271,10 @@ export const useTokenBalances = () => {
         ...token,
         balances: {},
         totalValueUSD: 0,
-        networkCount: token.networks.length // Add networkCount based on the number of networks
+        networkCount: token.networks.length,
       }));
     },
-    []
+    [],
   );
 
   // Fetch and attach balances to tokens
@@ -292,7 +293,8 @@ export const useTokenBalances = () => {
         setProgress({ processed: 0, total: tokens.length, percentage: 0 });
 
         // Clone tokens to add balance information
-        const enrichedTokens: TokenWithBalance[] = enrichTokensWithBalances(tokens);
+        const enrichedTokens: TokenWithBalance[] =
+          enrichTokensWithBalances(tokens);
 
         // Organize tokens by chain
         const tokensByChain = organizeTokensByChain(tokens);
@@ -391,6 +393,7 @@ export const useTokenBalances = () => {
     tokens,
     tokensLoading,
     walletAddresses,
+    enrichTokensWithBalances,
   ]);
 
   // Calculate percentage for progress

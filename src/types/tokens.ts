@@ -1,5 +1,3 @@
-import { TokenAmount } from '@lifi/sdk';
-
 // Define a TypeScript interface for a Token
 export interface Token {
   address: string;

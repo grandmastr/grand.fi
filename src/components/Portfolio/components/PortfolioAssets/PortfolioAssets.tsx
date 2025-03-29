@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, CircularProgress, Tooltip, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
 import { PortfolioAssetsList } from './PortfolioAssetsList';
 import { useTokenBalances } from '@/hooks/useTokenBalances';
@@ -8,28 +8,11 @@ import PortfolioAssetsSkeleton from './PortfolioAssetsSkeleton';
 import { useAccount } from '@lifi/wallet-management';
 
 /**
- * Loading indicator component that shows a circular progress
- */
-const BalanceLoadingIndicator = () => (
-  <Box
-    sx={{
-      display: 'flex',
-      justifyContent: 'end',
-      py: 2,
-    }}
-  >
-    <Tooltip title="Indexing wallet balances...">
-      <CircularProgress size={24} sx={{ mr: 2 }} />
-    </Tooltip>
-  </Box>
-);
-
-/**
  * @function PortfolioAssets
  */
 const PortfolioAssets = () => {
   const { tokensWithBalances, isLoading, error, progress } = useTokenBalances();
-  const {accounts} = useAccount();
+  const { accounts } = useAccount();
 
   if (!accounts.length) return null;
 
@@ -56,11 +39,11 @@ const PortfolioAssets = () => {
         progress={
           progress
             ? {
-              processed: progress.processed,
-              total: progress.total,
-              percentage: progress.percentage || 0,
-              tokensLoaded: tokensWithBalances?.length || 0,
-            }
+                processed: progress.processed,
+                total: progress.total,
+                percentage: progress.percentage || 0,
+                tokensLoaded: tokensWithBalances?.length || 0,
+              }
             : undefined
         }
       />
