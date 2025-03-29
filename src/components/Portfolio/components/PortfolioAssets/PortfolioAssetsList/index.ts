@@ -1,4 +1,2 @@
-export {
-  default as PortfolioAssetsList,
-  PortfolioAssetsListSkeleton,
-} from './PortfolioAssetsList';
+export { default as PortfolioAssetsList } from './PortfolioAssetsList';
+export { PortfolioAssetsListSkeleton } from './PortfolioAssetsListSkeleton';
