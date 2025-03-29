@@ -60,8 +60,17 @@ const ConnectButton = ({ sx }: ConnectButtonProps) => {
 
   return (
     <Button
-      sx={sx}
-      size="large"
+      sx={{
+        fontSize: '0.75rem',
+        display: 'grid',
+        alignItems: 'center',
+        placeItems: 'center',
+        py: '0.75rem',
+        px: '1.5rem',
+        // borderRadius: '50%',
+        ...sx,
+      }}
+      size={'large'}
       onClick={onClick}
       id={'connectButton'}
       data-testid="connect-wallet-button"

@@ -1,3 +1,5 @@
+import { Stack } from '@mui/material';
+import { ConnectButton } from '@/components';
 import { Title } from '../../Portfolio.style';
 
 /**
@@ -9,9 +11,12 @@ import { Title } from '../../Portfolio.style';
  */
 const PortfolioTitle = () => {
   return (
-    <Title variant={'h1'} sx={{ textAlign: 'center' }}>
-      Your Gateway to <span>Multi-Chain</span> Assets
-    </Title>
+    <Stack spacing={2} alignItems={'center'}>
+      <Title variant={'h1'} sx={{ textAlign: 'center' }}>
+        Your Gateway to <span>Multi-Chain</span> Assets
+      </Title>
+      <ConnectButton />
+    </Stack>
   );
 };
 

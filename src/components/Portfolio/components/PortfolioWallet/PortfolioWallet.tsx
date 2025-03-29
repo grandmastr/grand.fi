@@ -68,13 +68,12 @@ const PortfolioWallet = () => {
   }
 
   return (
-    <>
-      <ConnectButton />
+    <Stack spacing={2}>
       {isSomeWalletsConnected &&
         accounts.map((account: Account) => (
           <PortfolioEcosystemDetails account={account} key={account.chainId} />
         ))}
-    </>
+    </Stack>
   );
 };
 

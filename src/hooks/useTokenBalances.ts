@@ -22,6 +22,7 @@ export interface TokenBalance {
 export interface TokenWithBalance extends ConsolidatedToken {
   balances: Record<number, TokenBalance>;
   totalValueUSD: number;
+  networkCount?: number; // Number of networks where this token is available
 }
 
 /**
@@ -241,27 +242,39 @@ export const useFetchChainBalances = () => {
 };
 
 /**
- * Main hook to fetch and attach balances to tokens
- * Optimized for handling thousands of tokens
+ * Custom hook to fetch and attach balances to tokens
+ * Optimized for handling large numbers of tokens
  */
 export const useTokenBalances = () => {
-  const { accounts } = useAccount();
   const { data: tokens, isLoading: tokensLoading } = useTokens();
+  const { accounts } = useAccount();
   const { groupedChains } = useChainTypes();
-  const [tokensWithBalances, setTokensWithBalances] = useState<
-    TokenWithBalance[]
-  >([]);
-  const [isLoadingBalances, setIsLoadingBalances] = useState(false);
+  const [tokensWithBalances, setTokensWithBalances] = useState<TokenWithBalance[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [progress, setProgress] = useState<{
-    processed: number;
-    total: number;
-  }>({ processed: 0, total: 0 });
+  const [progress, setProgress] = useState<BalanceProgress>({
+    processed: 0,
+    total: 0,
+    percentage: 0
+  });
 
   // Use extracted hooks
   const connectedChainTypes = useConnectedChainTypes(accounts);
   const walletAddresses = useWalletAddresses(accounts);
   const fetchChainBalances = useFetchChainBalances();
+
+  // Enrich tokens with balances
+  const enrichTokensWithBalances = useCallback(
+    (baseTokens: ConsolidatedToken[]): TokenWithBalance[] => {
+      return baseTokens.map((token) => ({
+        ...token,
+        balances: {},
+        totalValueUSD: 0,
+        networkCount: token.networks.length // Add networkCount based on the number of networks
+      }));
+    },
+    []
+  );
 
   // Fetch and attach balances to tokens
   useEffect(() => {
@@ -271,19 +284,15 @@ export const useTokenBalances = () => {
     }
 
     const fetchAllBalances = async () => {
-      setIsLoadingBalances(true);
+      setIsLoading(true);
       setError(null);
 
       try {
         // Set total tokens to track progress
-        setProgress({ processed: 0, total: tokens.length });
+        setProgress({ processed: 0, total: tokens.length, percentage: 0 });
 
         // Clone tokens to add balance information
-        const enrichedTokens: TokenWithBalance[] = tokens.map((token) => ({
-          ...token,
-          balances: {},
-          totalValueUSD: 0,
-        }));
+        const enrichedTokens: TokenWithBalance[] = enrichTokensWithBalances(tokens);
 
         // Organize tokens by chain
         const tokensByChain = organizeTokensByChain(tokens);
@@ -311,7 +320,7 @@ export const useTokenBalances = () => {
             // Process each chain separately
             for (const chainId of chainIds) {
               const chainTokens = tokensByChain[chainId];
-              if (!chainTokens || chainTokens.length === 0) continue;
+              if (!(chainTokens && chainTokens.length)) continue;
 
               // Process in batches
               const BATCH_SIZE = 20;
@@ -365,11 +374,11 @@ export const useTokenBalances = () => {
 
         // Wait for all promises to complete
         await Promise.all(allPromises);
-        setIsLoadingBalances(false);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching balances:', error);
         setError(error instanceof Error ? error : new Error('Unknown error'));
-        setIsLoadingBalances(false);
+        setIsLoading(false);
       }
     };
 
@@ -397,7 +406,7 @@ export const useTokenBalances = () => {
   // Return in format that matches what components are expecting
   return {
     tokensWithBalances,
-    isLoading: isLoadingBalances || tokensLoading,
+    isLoading,
     error,
     progress: calculatedProgress,
   };

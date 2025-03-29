@@ -5,12 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="528a03f0-a3c7-41a8-8fff-798814c3a373" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/App/App.style.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/playwright-report/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/playwright-report/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test-results/.last-run.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/screenshots/wallet-modal.png" beforeDir="false" afterPath="$PROJECT_DIR$/tests/screenshots/wallet-modal.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/components/ConnectButton.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/components/ConnectButton.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/App/App.style.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Button/ConnectButton/ConnectButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Button/ConnectButton/ConnectButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssets.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssets.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/PortfolioAssetsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/PortfolioAssetsList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioTitle/PortfolioTitle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioTitle/PortfolioTitle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWallet/PortfolioWallet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWallet/PortfolioWallet.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWrapper/PortfolioWrapper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWrapper/PortfolioWrapper.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useTokenBalances.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useTokenBalances.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useTokenList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useTokenList.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/format.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/hooks/useTokens.test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/hooks/useTokens.test.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,31 +57,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/thegrandmaster/vault/web/grand.fi",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "/Users/thegrandmaster/vault/web/grand.fi/node_modules/eslint",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "/usr/local/Cellar/node/23.7.0/bin/node",
-    "nodejs_package_manager_path": "pnpm",
-    "prettierjs.PrettierConfiguration.Package": "/Users/thegrandmaster/vault/web/grand.fi/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.nodejs",
-    "ts.external.directory.path": "/Users/thegrandmaster/vault/web/grand.fi/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/thegrandmaster/vault/web/grand.fi&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;/Users/thegrandmaster/vault/web/grand.fi/node_modules/eslint&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;/usr/local/Cellar/node/23.7.0/bin/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/thegrandmaster/vault/web/grand.fi/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/thegrandmaster/vault/web/grand.fi/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/fonts" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/utils" />
       <recent name="$PROJECT_DIR$/src/components/Button" />
       <recent name="$PROJECT_DIR$/src/utils/fetch" />
       <recent name="$PROJECT_DIR$/src/components/Portfolio/components" />
@@ -107,7 +117,9 @@
       <workItem from="1743121742047" duration="2724000" />
       <workItem from="1743126812445" duration="1077000" />
       <workItem from="1743127921544" duration="14354000" />
-      <workItem from="1743177191637" duration="15539000" />
+      <workItem from="1743177191637" duration="16486000" />
+      <workItem from="1743213043987" duration="4521000" />
+      <workItem from="1743218183789" duration="1812000" />
     </task>
     <servers />
   </component>

@@ -20,7 +20,7 @@ export function useTokenList() {
     queryKey: ['tokenList', connectedChainTypes],
     queryFn: async () => {
       // If no accounts connected, return empty list
-      if (connectedChainTypes.length === 0) {
+      if (!connectedChainTypes.length) {
         return [];
       }
 

@@ -7,7 +7,7 @@ const mockTokens = [
 ];
 
 const fetchTokens = async (chainTypes: ChainType[]): Promise<any[]> => {
-  if (chainTypes.length === 0) return [];
+  if (!chainTypes.length) return [];
 
   if (!process.env.NEXT_PUBLIC_LIFI_API_URL) {
     throw new Error('Missing NEXT_PUBLIC_LIFI_API_URL');

@@ -6,14 +6,13 @@ import {
   Stack,
   Typography,
   useTheme,
-  LinearProgress,
-  Chip,
 } from '@mui/material';
 import { TokenWithBalance } from '@/hooks/useTokenBalances';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
 import { WalletAvatar } from '../../../components/PortfolioWallet/PortfolioWallet.style';
 import { PortfolioAssetsListSkeleton } from './PortfolioAssetsListSkeleton';
+import { formatAmount, formatCurrency, remToPx } from '@/utils';
 
 /**
  * Props interface for the PortfolioAssetsList component
@@ -34,36 +33,6 @@ interface PortfolioAssetsListProps {
 }
 
 /**
- * Formats a USD value with 2 decimal places
- */
-const formatUSD = (value: number): string => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(value);
-};
-
-/**
- * Formats a token amount with appropriate decimal places
- */
-const formatAmount = (value: string): string => {
-  const num = parseFloat(value);
-  if (num === 0) return '0';
-  if (num < 0.0001) return '<0.0001';
-
-  return num < 1 ? num.toFixed(4) : num.toFixed(2);
-};
-
-/**
- * Helper function to convert rem to pixels
- */
-const remToPx = (rem: number): number => {
-  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-};
-
-/**
  * Individual row to display a token
  * Wrapped in React.memo to prevent unnecessary re-renders
  */
@@ -72,10 +41,12 @@ const TokenRow = React.memo(
     token,
     virtualRow,
     theme,
+    spacing,
   }: {
     token: TokenWithBalance;
     virtualRow: any;
     theme: any;
+    spacing: number;
   }) => {
     // Get first balance for display, safely handle undefined case
     const balanceEntries = Object.entries(token.balances || {});
@@ -93,6 +64,7 @@ const TokenRow = React.memo(
           height: '4.5rem',
           transform: `translateY(${virtualRow.start}px)`,
           padding: theme.spacing(2),
+          marginBottom: spacing,
         }}
       >
         <Stack
@@ -114,10 +86,10 @@ const TokenRow = React.memo(
 
           <Stack alignItems="flex-end" sx={{ minWidth: '6.25rem' }}>
             <Typography variant="body1" fontWeight="500" color="text.primary">
-              {formatUSD(token.totalValueUSD)}
+              {formatCurrency(token.totalValueUSD)}
             </Typography>
             <Typography variant="caption" color="primary.main" noWrap>
-              {token.networkCount > 1
+              {token.networkCount && token.networkCount > 1
                 ? `On ${token.networkCount} networks`
                 : firstBalance
                   ? `${formatAmount(firstBalance.formattedAmount)} ${token.symbol}`
@@ -190,12 +162,11 @@ const TokenLogo = ({ token }: { token: TokenWithBalance }) => {
 export const PortfolioAssetsList = ({
   tokens = [],
   isLoading = false,
-  progress,
 }: PortfolioAssetsListProps) => {
   const theme = useTheme();
   const parentRef = useRef<HTMLDivElement>(null);
   const [itemSizePx, setItemSizePx] = useState(0);
-  const [showEmptyMessage, setShowEmptyMessage] = useState(false);
+  const [spacingPx, setSpacingPx] = useState(0);
 
   // Preserve tokens between renders if we have any
   const hasTokens = tokens.length > 0;
@@ -213,12 +184,13 @@ export const PortfolioAssetsList = ({
     return hasTokens ? tokens : cachedTokens;
   }, [tokens, hasTokens, cachedTokens]);
 
-  // Calculate item size in pixels once on component mount
+  // Calculate item size and spacing in pixels once on component mount
   useEffect(() => {
     const itemHeightRem = 4.5;
     const itemHeightPx = remToPx(itemHeightRem);
-    const spacingPx = parseFloat(theme.spacing(1));
-    setItemSizePx(itemHeightPx + spacingPx);
+    const calculatedSpacingPx = parseFloat(theme.spacing(1));
+    setSpacingPx(calculatedSpacingPx);
+    setItemSizePx(itemHeightPx + calculatedSpacingPx);
   }, [theme]);
 
   // Initialize the virtualizer hook with pixel values
@@ -226,17 +198,18 @@ export const PortfolioAssetsList = ({
     count: tokensToDisplay.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => itemSizePx || 72,
-    overscan: 5,
+    overscan: 10,
+    gap: spacingPx
   });
 
   // Show loading state only if we don't have any tokens to show
-  if (isLoading && tokensToDisplay.length === 0) {
+  if (isLoading && !tokensToDisplay.length) {
     return <PortfolioAssetsListSkeleton itemCount={7} />;
   }
 
   // We have tokens to show, or are still loading with cached tokens
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '50rem' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', maxHeight: '800px' }}>
       <Box
         ref={parentRef}
         sx={{
@@ -269,6 +242,7 @@ export const PortfolioAssetsList = ({
                 token={token}
                 virtualRow={virtualRow}
                 theme={theme}
+                spacing={spacingPx}
               />
             );
           })}

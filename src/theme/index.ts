@@ -5,10 +5,30 @@ import { deepmerge } from '@mui/utils';
 declare module '@mui/material/styles' {
   interface Palette {
     bg: Palette['primary'];
+    gradient: {
+      first: string;
+      second: string;
+      third: string;
+      fourth: string;
+      fifth: string;
+      pointer: string;
+      backgroundStart: string;
+      backgroundEnd: string;
+    };
   }
 
   interface PaletteOptions {
     bg?: PaletteOptions['primary'];
+    gradient?: {
+      first?: string;
+      second?: string;
+      third?: string;
+      fourth?: string;
+      fifth?: string;
+      pointer?: string;
+      backgroundStart?: string;
+      backgroundEnd?: string;
+    };
   }
 }
 
@@ -32,6 +52,17 @@ const utilityTheme = createTheme({
     },
     text: {
       primary: '#fff',
+    },
+    // Add gradient colors
+    gradient: {
+      backgroundStart: 'rgb(0, 0, 20)', // Dark blue-black
+      backgroundEnd: '#1d1d21', // Your existing background
+      first: '41, 98, 239', // Based on your primary color (#2962EF in RGB)
+      second: '221, 74, 255', // Purple
+      third: '100, 220, 255', // Light blue
+      fourth: '200, 50, 50', // Red accent
+      fifth: '180, 180, 50', // Yellow accent
+      pointer: '140, 100, 255', // Interactive pointer color
     },
   },
   shape: {
@@ -66,8 +97,18 @@ export const theme = createTheme(
             background: theme.palette.background.default,
             backgroundRepeat: 'no-repeat',
             backgroundAttachment: 'fixed',
-            backdropFilter:
-              'blur(10px) saturate(190%) contrast(70%) brightness(80%)',
+            backdropFilter: 'blur(10px) saturate(190%) contrast(70%) brightness(80%)',
+            // Add CSS variables for gradient colors
+            '--gradient-background-start': theme.palette.gradient.backgroundStart,
+            '--gradient-background-end': theme.palette.gradient.backgroundEnd,
+            '--first-color': theme.palette.gradient.first,
+            '--second-color': theme.palette.gradient.second,
+            '--third-color': theme.palette.gradient.third,
+            '--fourth-color': theme.palette.gradient.fourth,
+            '--fifth-color': theme.palette.gradient.fifth,
+            '--pointer-color': theme.palette.gradient.pointer,
+            '--size': '80%',
+            '--blending-value': 'hard-light',
           }),
         },
       },
