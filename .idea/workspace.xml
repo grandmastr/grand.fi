@@ -5,21 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="528a03f0-a3c7-41a8-8fff-798814c3a373" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/App/App.style.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/App/App.style.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Button/ConnectButton/ConnectButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Button/ConnectButton/ConnectButton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssets.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssets.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/PortfolioAssetsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioAssets/PortfolioAssetsList/PortfolioAssetsList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioTitle/PortfolioTitle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioTitle/PortfolioTitle.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWallet/PortfolioWallet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWallet/PortfolioWallet.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWrapper/PortfolioWrapper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Portfolio/components/PortfolioWrapper/PortfolioWrapper.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useTokenBalances.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useTokenBalances.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useTokenList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useTokenList.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/format.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/hooks/useTokens.test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/hooks/useTokens.test.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +108,8 @@
       <workItem from="1743127921544" duration="14354000" />
       <workItem from="1743177191637" duration="16486000" />
       <workItem from="1743213043987" duration="4521000" />
-      <workItem from="1743218183789" duration="1812000" />
+      <workItem from="1743218183789" duration="2476000" />
+      <workItem from="1743254733532" duration="547000" />
     </task>
     <servers />
   </component>

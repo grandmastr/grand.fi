@@ -1,13 +1,13 @@
 'use client';
-import { useMemo, useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import {
   Badge,
+  colors,
   Skeleton,
   Stack,
   Tooltip,
   Typography,
-  colors,
-  CircularProgress,
+  useTheme,
 } from '@mui/material';
 import {
   type Account,
@@ -15,6 +15,7 @@ import {
   useAccount,
   useAccountDisconnect,
 } from '@lifi/wallet-management';
+import { toast } from 'sonner';
 import { copyToClipboard, createWalletAbbr, openInExplorer } from '@/utils';
 import { useChains } from '@/hooks';
 import {
@@ -25,47 +26,13 @@ import {
 import Logout from '@mui/icons-material/Logout';
 import OpenInNew from '@mui/icons-material/OpenInNew';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { ConnectButton } from '@/components';
-import { useTheme } from '@mui/material';
 import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
 import { PortfolioWalletSkeleton } from './PortfolioWalletSkeleton';
 
-// Add loading progress indicator
-const LoadingProgress = ({
-  completed,
-  total,
-}: {
-  completed: number;
-  total: number;
-}) => {
-  const progress = (completed / total) * 100;
-  return (
-    <Typography
-      variant="caption"
-      color="text.secondary"
-      sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-    >
-      <CircularProgress size={16} variant="determinate" value={progress} />
-      Loading tokens ({completed}/{total})
-    </Typography>
-  );
-};
-
 const PortfolioWallet = () => {
   const { accounts } = useAccount();
-  // Use state to track if we've mounted on the client
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const isSomeWalletsConnected: boolean = !!accounts.length;
-
-  // During SSR or first render, show minimal content
-  if (!isMounted) {
-    return <ConnectButton />;
-  }
 
   return (
     <Stack spacing={2}>
@@ -112,6 +79,7 @@ const PortfolioEcosystemDetails = ({ account }: { account: Account }) => {
       return;
     }
     await disconnectWallet(account);
+    toast.success('Wallet disconnected');
   };
 
   return (

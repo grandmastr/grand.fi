@@ -5,6 +5,7 @@ import { PortfolioBox } from '@/components/Portfolio/Portfolio.style';
 import { PortfolioAssetsList } from './PortfolioAssetsList';
 import { useTokenBalances } from '@/hooks/useTokenBalances';
 import PortfolioAssetsSkeleton from './PortfolioAssetsSkeleton';
+import { useAccount } from '@lifi/wallet-management';
 
 /**
  * Loading indicator component that shows a circular progress
@@ -28,6 +29,9 @@ const BalanceLoadingIndicator = () => (
  */
 const PortfolioAssets = () => {
   const { tokensWithBalances, isLoading, error, progress } = useTokenBalances();
+  const {accounts} = useAccount();
+
+  if (!accounts.length) return null;
 
   if (error) {
     return (
